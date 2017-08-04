@@ -18,5 +18,5 @@ cd $1
 echo `pwd`
 #ln -s /input/$1/*.[Rr]aw .
 #echo `ls -lah /output`
-#echo `ls -lah /input/$1/*.[Rr]aw`
+#echo `ls -lah /input/$1/*.[Rr][Aa][Ww]`
 wine msconvert *.[Rr]aw --filter "peakPicking true 1" -z
