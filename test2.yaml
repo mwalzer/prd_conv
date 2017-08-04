@@ -1,0 +1,6 @@
+image: mwalzer/pwiz:alpine
+mount_home: false
+mounts:
+- /hps/nobackup/proteomics/prd_conv/:/input
+- /hps/nobackup/proteomics/prd_conv/wine_pwiz_4323-anonym/:/home/wine/pwiz
+write_output: true                                                                          
