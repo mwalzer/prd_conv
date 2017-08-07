@@ -1,5 +1,8 @@
 #!/bin/bash
 # $1 is supposed to be the rsynced year folder of public pride submissions, with the mothly folders inside, and therein the PXD folders
+# $1 can be relative if script resides on the same level as the year folders do, must otherwise be absolute
+# for recursive unzipping:
+# find . -depth -name '*.zip' -exec /usr/bin/unzip -n {} \; -delete
 
 if [ $# -eq 0 ]
   then
@@ -8,18 +11,19 @@ if [ $# -eq 0 ]
 fi
 
 
-##TODO replace backticks by $(cmd) notation
+# change to $1 , also year variable for relative adressing from absolute input
 cd $1
+year=${PWD/*\//} 
 echo "checking directory:"
-echo `pwd`
+echo $(pwd)
 for d in */ ; do
     cd $d
     for pxd in */ ; do
-        #cdir="/hps/nobackup/docker/walzer/output/$1/$d$pxd"
-        cdir="/home/walzer/cloud-stuff/prd_conv/test/outtest/$1/$d$pxd"
+        #cdir="/hps/nobackup/docker/walzer/output/$year/$d$pxd"
+        cdir="/home/walzer/cloud-stuff/prd_conv/test/outtest/$year/$d$pxd"
         echo ""
 	echo "outdir $cdir"
-        count=`ls -1 $cdir*.mzML 2>/dev/null | wc -l`
+        count=$(ls -1 $cdir*.mzML 2>/dev/null | wc -l)
         if [ $count = 0 ]; then
                 echo "no mzMLs:"
 		echo ".."
@@ -60,7 +64,7 @@ for d in */ ; do
 		fi
 
 	fi
-	ziped=`ls -1 -d $PWD/$pxd*zip 2>/dev/null`
+	ziped=$(ls -1 -d $PWD/$pxd*zip 2>/dev/null)
 	if [ ! -z "$ziped" ]; then
 		echo "has zips:"
 		echo "$ziped"
