@@ -1,5 +1,9 @@
 #!/bin/sh
 # $1 is supposed to be the rsynced year folder of public pride submissions, with the mothly folders inside, and therein the PXD folders
+# execute from where $ reside, e.g.
+# pwd
+# /hps/nobackup/proteomics/prd_conv
+# ./submit_rsynced_year.sh 2016 > bsubmissions_2016.log
 
 function nk_jobid {
     output=$($*)
