@@ -25,7 +25,7 @@ for d in */ ; do
                 echo "got some"
 		for f in $cdir*mzML
 		do
-			validx=`tail -1 $f | grep -c "</indexedmzML>"`
+			validx=`tail -1 $f | grep -c "</\w*mzML>"`
 			#echo "is mzML? $validx"
 			if [ $validx = 0 ] ; then
 				echo "removing incomplete file $f!"
