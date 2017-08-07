@@ -22,6 +22,8 @@ for d in */ ; do
     cd $d
     for pxd in */ ; do
 #bsub -a 'docker(/homes/walzer/lsf_docker/test2.yaml)' '/home/wine/autoconvert.sh 2016/01/PXD003502'
+	# bsub -M <exit when exceeding> -R "rusage[mem=<MB RAM requested>]" -p <project> -a <application>
+        #mycmd=$(echo "bsub -M 8192 -R "rusage[mem=8192]" -P docker -a 'docker(/homes/walzer/lsf_docker/test2.yaml)' '/home/wine/autoconvert.sh "$1"/"$d""${pxd%/}"'" | xargs)
         mycmd=$(echo "bsub -a 'docker(/homes/walzer/lsf_docker/test2.yaml)' '/home/wine/autoconvert.sh "$1"/"$d""${pxd%/}"'" | xargs)
         jobid=$(nk_jobid ${mycmd%\\})
         echo "submitting ${pxd%/} as $jobid"       
