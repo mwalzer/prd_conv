@@ -17,12 +17,13 @@ for d in */ ; do
     for pxd in */ ; do
         #cdir="/hps/nobackup/docker/walzer/output/$1/$d$pxd"
         cdir="/home/walzer/cloud-stuff/prd_conv/test/outtest/$1/$d$pxd"
-        echo "outdir $cdir"
+        echo ""
+	echo "outdir $cdir"
         count=`ls -1 $cdir*.mzML 2>/dev/null | wc -l`
         if [ $count = 0 ]; then
-                echo "empty"
+                echo "no mzMLs:"
+		echo ".."
         else
-                echo "got some"
 		for f in $cdir*mzML
 		do
 			validx=`tail -1 $f | grep -c "</\w*mzML>"`
@@ -40,15 +41,23 @@ for d in */ ; do
 		#diff <(echo $raw) <(echo $mzml)
 
 		# check all raw are converted, echo unconverted
+		echo "unconverted:"
+		unconv=0
 		for fullfile in $PWD/$pxd/*[Rr][Aa][Ww]
 		do
         		filename=$(basename "$fullfile")
         		extension="${filename##*.}"
         		cleanfilename="${filename%.*}"
         		if ! [ -a "$cdir/$cleanfilename.mzML" ] ; then
-                		echo $fullfile
+                		echo "$fullfile"
+				unconv=1
         		fi
 		done
+		if [ "$unconv" -eq "0" ] ; then
+			echo ".."
+		else
+			unconv=0
+		fi
 
 	fi
 	ziped=`ls -1 -d $PWD/$pxd*zip 2>/dev/null`
@@ -64,6 +73,14 @@ for d in */ ; do
         if [ ! -z "$nested" ] || [ ! -z $nestedL2 ] || [ ! -z $nestedL3 ]; then
                 echo "has nested raws:"
                 echo "$nested"
+		if [ ! -z $nestedL2 ]; then
+			echo "(L2 nesting)"
+			echo "$nestedL2" 
+		fi
+		if [ ! -z $nestedL3 ]; then
+			echo "(L3+ nesting)"
+			echo "$nestedL3"
+		fi
         fi
 
     done
