@@ -3,6 +3,15 @@
 # $1 can be relative if script resides on the same level as the year folders do, must otherwise be absolute
 # for recursive unzipping:
 # find . -depth -name '*.zip' -exec /usr/bin/unzip -n {} \; -delete
+# bsub -n 4 find /hps/nobackup/proteomics/prd_conv/ -depth -name '*.zip' -exec /usr/bin/unzip -n {} \; -delete
+# bsub -n 4 "find /hps/nobackup/proteomics/prd_conv/ -depth -name '*.zip' -exec /usr/bin/unzip -n {} \; -delete"
+# bsub -n 4 "find /hps/nobackup/proteomics/prd_conv/ -depth -name '*.zip' -exec sh -c 'for f; do unzip -d "${f%/*}" "$f" ; done' "bash" {} \; -delete"
+# bsub -n 4 "find /hps/nobackup/proteomics/prd_conv/ -depth -name '*.zip' -exec sh -c 'for f; do unzip -d \"\${f%/*}\" \"\$f\" ; done' \"bash\" {} \; -delete"
+#	 
+#find -exec cmd {} does execute 'cmd result1 result2 ....'
+#+ invokes the command on a big bunch of files at once, not one after the other as with ; (which is standard)
+#exec sh -c calls the shell (first argument is the name of the shell second is the list from find)
+# bsub swallows $ and mutates ", so they need to be escaped
 
 if [ $# -eq 0 ]
   then
