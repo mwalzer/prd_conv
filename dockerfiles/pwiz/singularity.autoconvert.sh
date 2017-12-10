@@ -6,7 +6,7 @@
 #folder permissions???
 
 ### prep wine
-cp -r $1 /utils/.wine
+ln -s $1 /utils/.wine
 #chown -r wine:docker .wine 
 
 ### unconverted only
@@ -21,10 +21,10 @@ for f in $2/*.[Rr][Aa][Ww]; do
 done
 
 ### changing to 
-cd $1
+cd $2
 
 ### commence conversions!
-echo "converting *.[Rr][Aa][Ww]  --filter 'peakPicking true 1' -z from folder $2"
+echo "converting *.[Rr][Aa][Ww] --filter 'peakPicking true 1' -z from folder $2"
 wine msconvert *.[Rr][Aa][Ww] --filter "peakPicking true 1" -z
 
 ### unconverted only
