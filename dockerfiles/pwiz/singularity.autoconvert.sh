@@ -13,10 +13,10 @@ ln -s $1 /utils/.wine
 for f in $2/*.[Rr][Aa][Ww]; do 
 	if [ ! -f ${f%.*}.mzML ]
 	then 
-		echo "creating ${f%.*}.sha1"
+		echo "Creating ${f%.*}.sha1"
 		sha1sum $f > ${f%.*}.sha1
 	else
-		echo "skipping; ${f%.*}.mzML exists"
+		echo "Skipping sha1; ${f%.*}.mzML exists"
 	fi
 done
 
@@ -24,21 +24,22 @@ done
 cd $2
 
 ### commence conversions!
-echo "converting *.[Rr][Aa][Ww] --filter 'peakPicking true 1' -z from folder $2"
+echo "Converting *.[Rr][Aa][Ww] --filter 'peakPicking true 1' -z from folder $2"
 wine msconvert *.[Rr][Aa][Ww] --filter "peakPicking true 1" -z
 
 ### unconverted only
 for f in $2/*.sha1; do 
-	if [ ! -f ${f%.*}.mzML ]
+	if [ -f ${f%.*}.mzML ]
 	then 
 		occ=$(awk '{print $1}' ${f%.*}.sha1 | grep -o -f - ${f%.*}.mzML | wc -l)
+		sz=$(ls -lah ${f%.*}.mzML | awk '{ print $5}')
 		if [[ $occ -eq 1 ]]
 		then
-			echo "removing after sha1 check in mzML ${f%.*}.mzML"
+			echo "Removing raw after sha1 check in ${f%.*}.mzML (size $sz)"
 			rm ${f%.*}.[Rr][Aa][Ww]
 		else
-			sz=$(ls -lah ${f%.*}.mzML | awk '{ print $5}')
-			echo "conversion failed judging by mzML sha1 for ${f%.*}.mzML (size $sz)"
+			echo "Conversion failed judging by mzML sha1 for ${f%.*}.mzML (size $sz)"
+			rm ${f%.*}.mzML
 		fi
 	else
 		echo "Failed to convert to ${f%.*}.mzML"
