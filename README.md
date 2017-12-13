@@ -15,4 +15,4 @@ write_output: true
 with mounted in /home/wine/pwiz the complete .wine contents will be copied to utils
 
 ## using singularity
-bsub -R "select[singularity]" -M 8192 -R "rusage[mem=8192]" "singularity exec docker://mwalzer/pwiz:alpine_v0.4 /utils/singularity.autoconvert.sh /hps/nobackup/proteomics/prd_conv/wine_pwiz_4323-anonym /hps/nobackup/proteomics/prd_conv/test"
+bsub -R "select[singularity]" -M 8192 -R "rusage[mem=8192]" "singularity exec docker://mwalzer/pwiz:alpine_v0.5 /utils/singularity.autoconvert.sh /hps/nobackup/proteomics/prd_conv/wine_pwiz_4323-anonym /hps/nobackup/proteomics/prd_conv/test"

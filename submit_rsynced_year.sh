@@ -24,7 +24,9 @@ for d in */ ; do
 #bsub -a 'docker(/homes/walzer/lsf_docker/test2.yaml)' '/home/wine/autoconvert.sh 2016/01/PXD003502'
 	# bsub -M <exit when exceeding> -R "rusage[mem=<MB RAM requested>]" -p <project> -a <application>
         #mycmd=$(echo "bsub -M 8192 -R "rusage[mem=8192]" -P docker -a 'docker(/homes/walzer/lsf_docker/test2.yaml)' '/home/wine/autoconvert.sh "$1"/"$d""${pxd%/}"'" | xargs)
-        mycmd=$(echo "bsub -a 'docker(/homes/walzer/lsf_docker/test2.yaml)' '/home/wine/autoconvert.sh "$1"/"$d""${pxd%/}"'" | xargs)
+        #mycmd=$(echo "bsub -a 'docker(/homes/walzer/lsf_docker/test2.yaml)' '/home/wine/autoconvert.sh "$1"/"$d""${pxd%/}"'" | xargs)
+	# bsub -R "select[singularity]" -M 8192 -R "rusage[mem=8192]" "singularity exec docker://mwalzer/pwiz:alpine_v0.5 /utils/singularity.autoconvert.sh /hps/nobackup/proteomics/prd_conv/wine_pwiz_4323-anonym /hps/nobackup/proteomics/prd_conv/PXD004894"
+        mycmd=$(echo "bsub -R 'select[singularity]' -M 8192 -R 'rusage[mem=8192]' 'singularity exec docker://mwalzer/pwiz:alpine_v0.5 /utils/singularity.autoconvert.sh /hps/nobackup/proteomics/prd_conv/wine_pwiz_4323-anonym $PWD/${pxd%?}'")
         jobid=$(nk_jobid ${mycmd%\\})
         echo "submitting ${pxd%/} as $jobid"       
         echo "=$mycmd"
